@@ -12,12 +12,7 @@ public partial class HistoryViewModel : ViewModelBase
 {
     private static string GetHistoryFilePath()
     {
-        string baseDir;
-#if ANDROID
-        baseDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-#else
-        baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-#endif
+        string baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string dir = Path.Combine(baseDir, "DickHelper");
         Directory.CreateDirectory(dir);
         return Path.Combine(dir, "history.json");

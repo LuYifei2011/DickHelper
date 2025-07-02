@@ -45,6 +45,13 @@
 2. 选择对应的启动项目（如桌面端、安卓端等）。
 3. 编译并运行。
 
+### 生成测试数据
+如需生成测试用的历史记录数据，可运行 `test_data_generator.py` 脚本，自动覆盖原有数据：
+
+```bash
+python test_data_generator.py
+```
+
 ## 依赖
 - .NET 6 或更高版本
 - Avalonia UI
