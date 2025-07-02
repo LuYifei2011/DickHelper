@@ -34,6 +34,12 @@
 - [NzHelper](https://github.com/LuYifei2011/DickHelper)
 - [DickHelper](https://github.com/zzzdajb/DickHelper)
 
+## 屏幕截图
+<img alt="Android 主页" src="./screenshot/Android_主页.jpg" height=200>
+<img alt="Android 历史详情" src="./screenshot/Android_历史详情.jpg" height=200>
+<img alt="Windows 主页" src="./screenshot/Windows_主页.png" height=200>
+<img alt="Windows 记录详情" src="./screenshot/Windows_记录详情.png" height=200>
+
 ## 如何运行
 1. 使用 Visual Studio 2022 或更高版本打开 `DickHelper.sln` 解决方案。
 2. 选择对应的启动项目（如桌面端、安卓端等）。
