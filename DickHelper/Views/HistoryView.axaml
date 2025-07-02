@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:DickHelper.ViewModels"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="DickHelper.Views.HistoryView"
+			 x:DataType="vm:HistoryViewModel">
+	<Grid>
+   <ListBox x:Name="RecordsListBox"
+		   ItemsSource="{Binding Records}"
+		   SelectedItem="{Binding SelectedRecord, Mode=TwoWay}"
+		   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+		   Margin="20, 20, 20, 70">
+		   <ListBox.ItemTemplate>
+			  <DataTemplate>
+				 <Border Margin="2" Padding="8" CornerRadius="6" Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+					  <StackPanel>
+						 <TextBlock Text="{Binding DisplayDate}" FontSize="16" TextWrapping="Wrap"/>
+						 <TextBlock Text="{Binding DisplayDuration}" FontSize="14" Foreground="{DynamicResource ThemeForegroundBrush}" Opacity="0.7" TextWrapping="Wrap"/>
+					  </StackPanel>
+				  </Border>
+			  </DataTemplate>
+		   </ListBox.ItemTemplate>
+	   </ListBox>
+
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+			<Button Content="删除选中" Command="{Binding DeleteRecordCommand}" Margin="0,0,10,0" Width="100"/>
+			<Button Content="清空全部" Command="{Binding ClearAllCommand}" Width="100"/>
+		</StackPanel>
+	</Grid>
+</UserControl>

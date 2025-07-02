@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DickHelper.Views.HistoryDetailDialogContent"
+             Width="400" Height="300">
+    <Grid>
+        <StackPanel Margin="20" Spacing="10">
+            <TextBlock Text="历史详情" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            
+            <Grid ColumnDefinitions="80,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="日期：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="DateText"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="用时：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="DurationText"/>
+                
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="备注：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="RemarkText" TextWrapping="Wrap"/>
+                
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="起飞地点：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="LocationText" TextWrapping="Wrap"/>
+                
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="道具：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" x:Name="ToolText"/>
+                
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="评分：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" x:Name="ScoreText"/>
+                
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="心情：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" x:Name="MoodText"/>
+                
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="观看小电影：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="7" Grid.Column="1" x:Name="MovieText"/>
+                
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="高潮：" FontWeight="Bold"/>
+                <TextBlock Grid.Row="8" Grid.Column="1" x:Name="ClimaxText"/>
+            </Grid>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
+                <Button x:Name="OkButton" Content="关闭" Width="80" Classes="accent"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DickHelper.Views.RecordDialogContent"
+             Width="410" Height="540">
+    <Grid>
+        <StackPanel Margin="20" Spacing="10">
+            <TextBlock Text="记录详情" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            
+            <TextBlock Text="备注："/>
+            <TextBox x:Name="RemarkBox"/>
+            
+            <TextBlock Text="起飞地点："/>
+            <TextBox x:Name="LocationBox"/>
+            
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <CheckBox x:Name="MovieBox" Content="观看小电影"/>
+                <CheckBox x:Name="ClimaxBox" Content="高潮"/>
+            </StackPanel>
+            
+            <TextBlock Text="道具："/>
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <RadioButton x:Name="HandRadio" Content="手" GroupName="ToolGroup" IsChecked="True"/>
+                <RadioButton x:Name="CupRadio" Content="飞机杯" GroupName="ToolGroup"/>
+                <RadioButton x:Name="DollRadio" Content="娃娃" GroupName="ToolGroup"/>
+            </StackPanel>
+            
+            <TextBlock Text="评分："/>
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Slider x:Name="ScoreSlider" Minimum="0" Maximum="5" Value="3" TickFrequency="0.5" Width="200"/>
+                <TextBlock x:Name="ScoreText" Text="3.0/5.0分" VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <TextBlock Text="心情："/>
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <RadioButton x:Name="MoodCalm" Content="平静" GroupName="MoodGroup" IsChecked="True"/>
+                <RadioButton x:Name="MoodHappy" Content="愉悦" GroupName="MoodGroup"/>
+                <RadioButton x:Name="MoodExcited" Content="兴奋" GroupName="MoodGroup"/>
+                <RadioButton x:Name="MoodTired" Content="疲惫" GroupName="MoodGroup"/>
+                <RadioButton x:Name="MoodLast" Content="这是最后一次！" GroupName="MoodGroup"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
+                <Button x:Name="OkButton" Content="确定" Width="80" Classes="accent"/>
+                <Button x:Name="CancelButton" Content="取消" Width="80"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
