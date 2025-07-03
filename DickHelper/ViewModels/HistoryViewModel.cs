@@ -10,6 +10,10 @@ namespace DickHelper.ViewModels;
 
 public partial class HistoryViewModel : ViewModelBase
 {
+    public void NotifyRecordsChanged()
+    {
+        OnPropertyChanged(nameof(Records));
+    }
     private static HistoryViewModel? _instance;
     public static HistoryViewModel Instance => _instance ??= new HistoryViewModel();
 
@@ -79,7 +83,7 @@ public partial class HistoryViewModel : ViewModelBase
         }
     }
 
-    private async void SaveHistoryAsync()
+    public async void SaveHistoryAsync()
     {
         try
         {

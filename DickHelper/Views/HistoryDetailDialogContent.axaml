@@ -36,7 +36,7 @@
             </Grid>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
-                <Button x:Name="OkButton" Content="关闭" Width="80" Classes="accent"/>
+                <Button x:Name="OkButton" Content="关闭" Classes="accent"/>
             </StackPanel>
         </StackPanel>
     </Grid>

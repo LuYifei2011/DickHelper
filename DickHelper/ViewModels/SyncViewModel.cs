@@ -8,6 +8,18 @@ namespace DickHelper.ViewModels
 {
     public partial class SyncViewModel : ObservableObject
     {
+        [RelayCommand]
+        public void RefreshPeers()
+        {
+            if (_p2pService != null)
+            {
+                DiscoveredPeers.Clear();
+                foreach (var peer in _p2pService.GetKnownPeers())
+                {
+                    DiscoveredPeers.Add(peer);
+                }
+            }
+        }
         private P2PSyncService? _p2pService;
 
         [ObservableProperty]

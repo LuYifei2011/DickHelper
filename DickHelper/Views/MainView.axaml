@@ -8,9 +8,9 @@
 		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 			<TextBlock Text="记录新的手艺活" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,30"/>
 			<TextBlock x:Name="TimerText" FontSize="48" HorizontalAlignment="Center"/>
-			<Button x:Name="StartButton" Content="开始" Margin="0,20,0,0" Width="100" HorizontalAlignment="Center"/>
-			<Button x:Name="PauseButton" Content="暂停" Margin="0,10,0,0" Width="100" HorizontalAlignment="Center"/>
-			<Button x:Name="StopButton" Content="结束" Margin="0,10,0,0" Width="100" HorizontalAlignment="Center"/>
+			<Button x:Name="StartButton" Content="开始" Margin="0,20,0,0"  HorizontalAlignment="Center"/>
+			<Button x:Name="PauseButton" Content="暂停" Margin="0,10,0,0"  HorizontalAlignment="Center"/>
+			<Button x:Name="StopButton" Content="结束" Margin="0,10,0,0"  HorizontalAlignment="Center"/>
 
 		</StackPanel>
 	</Grid>

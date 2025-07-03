@@ -14,16 +14,12 @@
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="BackgroundBrush">#FFF</SolidColorBrush>
                     <SolidColorBrush x:Key="HeaderBrush">#F5F5F5</SolidColorBrush>
-                    <SolidColorBrush x:Key="PrimaryBrush">#007ACC</SolidColorBrush>
-                    <SolidColorBrush x:Key="PrimaryBrushPointerOver">#005A9E</SolidColorBrush>
                     <SolidColorBrush x:Key="BorderBrush">#E0E0E0</SolidColorBrush>
                     <SolidColorBrush x:Key="GrayTextBrush">Gray</SolidColorBrush>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="BackgroundBrush">#23272E</SolidColorBrush>
                     <SolidColorBrush x:Key="HeaderBrush">#2D333B</SolidColorBrush>
-                    <SolidColorBrush x:Key="PrimaryBrush">#3399FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="PrimaryBrushPointerOver">#1976D2</SolidColorBrush>
                     <SolidColorBrush x:Key="BorderBrush">#3A3F4B</SolidColorBrush>
                     <SolidColorBrush x:Key="GrayTextBrush">#B0B0B0</SolidColorBrush>
                 </ResourceDictionary>
@@ -70,15 +66,7 @@
                         IsEnabled="{Binding CanStartAnalysis}"
                         HorizontalAlignment="Left"
                         Padding="16,8"
-                        Background="{DynamicResource PrimaryBrush}"
-                        Foreground="White"
-                        CornerRadius="4">
-                    <Button.Styles>
-                        <Style Selector="Button:pointerover">
-                            <Setter Property="Background" Value="{DynamicResource PrimaryBrushPointerOver}"/>
-                        </Style>
-                    </Button.Styles>
-                </Button>
+                        Classes="accent"/>
             </StackPanel>
         </Border>
 

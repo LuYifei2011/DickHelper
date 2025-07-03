@@ -87,26 +87,48 @@ namespace DickHelper.Services
         {
             using (client)
             using (var stream = client.GetStream())
-            using (var reader = new StreamReader(stream, Encoding.UTF8, false, 4096, true))
-            using (var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true) { AutoFlush = true })
             {
                 // 简单协议：收到"GET"则返回本地数据，收到"POST"后接收数据并合并
-                var cmd = await reader.ReadLineAsync();
+                var cmdBuffer = new byte[4];
+                await stream.ReadAsync(cmdBuffer, 0, 4);
+                int cmdLen = BitConverter.ToInt32(cmdBuffer, 0);
+                var cmdBytes = new byte[cmdLen];
+                await stream.ReadAsync(cmdBytes, 0, cmdLen);
+                var cmd = Encoding.UTF8.GetString(cmdBytes);
                 if (cmd == "GET")
                 {
                     var json = JsonSerializer.Serialize(HistoryViewModel.Instance.Records);
-                    await writer.WriteLineAsync(json);
+                    var jsonBytes = Encoding.UTF8.GetBytes(json);
+                    var lenBytes = BitConverter.GetBytes(jsonBytes.Length);
+                    await stream.WriteAsync(lenBytes, 0, 4);
+                    await stream.WriteAsync(jsonBytes, 0, jsonBytes.Length);
                 }
                 else if (cmd == "POST")
                 {
-                    var json = await reader.ReadLineAsync();
+                    // 先读长度
+                    var lenBuffer = new byte[4];
+                    await stream.ReadAsync(lenBuffer, 0, 4);
+                    int jsonLen = BitConverter.ToInt32(lenBuffer, 0);
+                    var jsonBytes = new byte[jsonLen];
+                    int read = 0;
+                    while (read < jsonLen)
+                    {
+                        int r = await stream.ReadAsync(jsonBytes, read, jsonLen - read);
+                        if (r == 0) break;
+                        read += r;
+                    }
+                    var json = Encoding.UTF8.GetString(jsonBytes);
                     if (!string.IsNullOrEmpty(json))
                     {
                         var incoming = JsonSerializer.Deserialize<List<HistoryRecord>>(json);
                         if (incoming != null)
                             MergeRecords(incoming);
                     }
-                    await writer.WriteLineAsync("OK");
+                    // 返回OK
+                    var okBytes = Encoding.UTF8.GetBytes("OK");
+                    var okLen = BitConverter.GetBytes(okBytes.Length);
+                    await stream.WriteAsync(okLen, 0, 4);
+                    await stream.WriteAsync(okBytes, 0, okBytes.Length);
                 }
             }
         }
@@ -186,61 +208,25 @@ namespace DickHelper.Services
             }
         }
 
-        private async Task HandleHttpRequest(HttpListenerContext context)
-        {
-            var req = context.Request;
-            var resp = context.Response;
-
-            try
-            {
-                if (req.HttpMethod == "GET")
-                {
-                    // 返回本地历史数据
-                    var records = HistoryViewModel.Instance.Records;
-                    var json = JsonSerializer.Serialize(records);
-                    var buffer = Encoding.UTF8.GetBytes(json);
-                    resp.ContentType = "application/json";
-                    resp.ContentLength64 = buffer.Length;
-                    await resp.OutputStream.WriteAsync(buffer, 0, buffer.Length);
-                }
-                else if (req.HttpMethod == "POST")
-                {
-                    // 接收并合并历史数据
-                    using var reader = new StreamReader(req.InputStream, Encoding.UTF8);
-                    var body = await reader.ReadToEndAsync();
-                    var incoming = JsonSerializer.Deserialize<List<HistoryRecord>>(body);
-                    if (incoming != null)
-                    {
-                        MergeRecords(incoming);
-                    }
-                    resp.StatusCode = 200;
-                }
-                else
-                {
-                    resp.StatusCode = 405;
-                }
-            }
-            catch
-            {
-                resp.StatusCode = 500;
-            }
-            finally
-            {
-                resp.Close();
-            }
-        }
-
         private void MergeRecords(List<HistoryRecord> incoming)
         {
             var local = HistoryViewModel.Instance.Records;
             var comparer = new HistoryRecordComparer();
 
+            bool changed = false;
             foreach (var record in incoming)
             {
                 if (!local.Contains(record, comparer))
                 {
                     local.Add(record);
+                    changed = true;
                 }
+            }
+            if (changed)
+            {
+                // 合并后立即保存并通知界面刷新
+                HistoryViewModel.Instance.SaveHistoryAsync();
+                HistoryViewModel.Instance.NotifyRecordsChanged();
             }
         }
 
@@ -253,10 +239,24 @@ namespace DickHelper.Services
                 {
                     await client.ConnectAsync(peerAddress, _httpPort);
                     using var stream = client.GetStream();
-                    using var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true) { AutoFlush = true };
-                    using var reader = new StreamReader(stream, Encoding.UTF8, false, 4096, true);
-                    await writer.WriteLineAsync("GET");
-                    var json = await reader.ReadLineAsync();
+                    // 发送GET命令
+                    var cmdBytes = Encoding.UTF8.GetBytes("GET");
+                    var cmdLen = BitConverter.GetBytes(cmdBytes.Length);
+                    await stream.WriteAsync(cmdLen, 0, 4);
+                    await stream.WriteAsync(cmdBytes, 0, cmdBytes.Length);
+                    // 读取对方数据长度
+                    var lenBuffer = new byte[4];
+                    await stream.ReadAsync(lenBuffer, 0, 4);
+                    int jsonLen = BitConverter.ToInt32(lenBuffer, 0);
+                    var jsonBytes = new byte[jsonLen];
+                    int read = 0;
+                    while (read < jsonLen)
+                    {
+                        int r = await stream.ReadAsync(jsonBytes, read, jsonLen - read);
+                        if (r == 0) break;
+                        read += r;
+                    }
+                    var json = Encoding.UTF8.GetString(jsonBytes);
                     if (!string.IsNullOrEmpty(json))
                     {
                         var incoming = JsonSerializer.Deserialize<HistoryRecord[]>(json);
@@ -269,12 +269,29 @@ namespace DickHelper.Services
                 {
                     await client.ConnectAsync(peerAddress, _httpPort);
                     using var stream = client.GetStream();
-                    using var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true) { AutoFlush = true };
-                    using var reader = new StreamReader(stream, Encoding.UTF8, false, 4096, true);
-                    await writer.WriteLineAsync("POST");
+                    // 发送POST命令
+                    var cmdBytes = Encoding.UTF8.GetBytes("POST");
+                    var cmdLen = BitConverter.GetBytes(cmdBytes.Length);
+                    await stream.WriteAsync(cmdLen, 0, 4);
+                    await stream.WriteAsync(cmdBytes, 0, cmdBytes.Length);
+                    // 发送本地数据
                     var localJson = JsonSerializer.Serialize(HistoryViewModel.Instance.Records.ToArray());
-                    await writer.WriteLineAsync(localJson);
-                    await reader.ReadLineAsync(); // 等待OK
+                    var localBytes = Encoding.UTF8.GetBytes(localJson);
+                    var localLen = BitConverter.GetBytes(localBytes.Length);
+                    await stream.WriteAsync(localLen, 0, 4);
+                    await stream.WriteAsync(localBytes, 0, localBytes.Length);
+                    // 等待OK
+                    var okLenBuf = new byte[4];
+                    await stream.ReadAsync(okLenBuf, 0, 4);
+                    int okLen = BitConverter.ToInt32(okLenBuf, 0);
+                    var okBuf = new byte[okLen];
+                    int okRead = 0;
+                    while (okRead < okLen)
+                    {
+                        int r = await stream.ReadAsync(okBuf, okRead, okLen - okRead);
+                        if (r == 0) break;
+                        okRead += r;
+                    }
                 }
                 StatusChanged?.Invoke($"与 {peerAddress} 同步成功");
             }

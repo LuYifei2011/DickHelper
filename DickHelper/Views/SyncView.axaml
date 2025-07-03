@@ -11,13 +11,16 @@
         
         <!-- P2P服务控制 -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16">
-            <Button Content="启动P2P" Command="{Binding StartP2PServiceCommand}" Width="100" Height="36"/>
-            <Button Content="停止P2P" Command="{Binding StopP2PServiceCommand}" Width="100" Height="36"/>
+            <Button Content="启动P2P" Command="{Binding StartP2PServiceCommand}"/>
+            <Button Content="停止P2P" Command="{Binding StopP2PServiceCommand}"/>
         </StackPanel>
         
         <!-- 发现的节点列表 -->
         <StackPanel Spacing="12" Margin="0,8,0,0">
-            <TextBlock Text="发现的节点:" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                <TextBlock Text="发现的节点:" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Button Content="手动刷新" Command="{Binding RefreshPeersCommand}" Margin="8,0,0,0"/>
+            </StackPanel>
             <ListBox ItemsSource="{Binding DiscoveredPeers}"
                      SelectedItem="{Binding SelectedPeer, Mode=TwoWay}"
                      Height="120"
@@ -33,8 +36,8 @@
         
         <!-- 同步操作 -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16" Margin="0,8,0,0">
-            <Button Content="同步选中节点" Command="{Binding SyncWithPeerCommand}" Width="120" Height="32"/>
-            <Button Content="同步所有节点" Command="{Binding SyncWithAllPeersCommand}" Width="120" Height="32"/>
+            <Button Content="同步选中节点" Command="{Binding SyncWithPeerCommand}"/>
+            <Button Content="同步所有节点" Command="{Binding SyncWithAllPeersCommand}"/>
         </StackPanel>
         
         <TextBlock Text="{Binding SyncStatus}" Foreground="Blue" HorizontalAlignment="Center" Margin="0,16,0,0" FontSize="14"/>
