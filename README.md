@@ -35,7 +35,7 @@
 本项目绝大部分代码由 GitHub Copilot 生成和辅助编写，极大提升了开发效率。
 
 本项目参考了以下开源项目：
-- [NzHelper](https://github.com/zzzdajb/NzHelper)
+- [NzHelper](https://github.com/bug-bit/NzHelper)
 - [DickHelper](https://github.com/zzzdajb/DickHelper)
 
 ## 联系方式
