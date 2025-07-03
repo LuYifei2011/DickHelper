@@ -42,6 +42,7 @@
 如有建议、问题或合作意向，欢迎通过 [GitHub Issues](https://github.com/LuYifei2011/DickHelper/issues) 提出，或通过 Telegram 联系 [@luyifei2011_bot](https://t.me/luyifei2011_bot)。
 
 ## 屏幕截图
+<div style="display: inline-block;">
 <img alt="Android 主页" src="./screenshot/Android_主页.jpg" height=200>
 <img alt="Android 历史详情" src="./screenshot/Android_历史详情.jpg" height=200>
 <img alt="Android AI" src="./screenshot/Android_AI.jpg" height=200>
@@ -50,6 +51,7 @@
 <img alt="Windows 记录详情" src="./screenshot/Windows_记录详情.png" height=200>
 <img alt="Windows 统计" src="./screenshot/Windows_统计.png" height=200>
 <img alt="Windows AI" src="./screenshot/Windows_AI.png" height=200>
+</div>
 
 ## 如何运行
 1. 使用 Visual Studio 2022 或更高版本打开 `DickHelper.sln` 解决方案。
