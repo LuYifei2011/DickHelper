@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using DialogHostAvalonia;
+using DickHelper.ViewModels;
 
 namespace DickHelper.Views;
 
@@ -9,7 +10,7 @@ public partial class HistoryView : UserControl
     public HistoryView()
     {
         InitializeComponent();
-        DataContext = App.HistoryViewModelInstance;
+        DataContext = HistoryViewModel.Instance;
 
         var listBox = this.FindControl<ListBox>("RecordsListBox");
         if (listBox != null)

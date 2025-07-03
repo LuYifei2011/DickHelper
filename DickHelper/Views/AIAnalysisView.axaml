@@ -1,0 +1,142 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:DickHelper.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DickHelper.Views.AIAnalysisView"
+             x:DataType="vm:AIAnalysisViewModel"
+             xmlns:markdown="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="BackgroundBrush">#FFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="HeaderBrush">#F5F5F5</SolidColorBrush>
+                    <SolidColorBrush x:Key="PrimaryBrush">#007ACC</SolidColorBrush>
+                    <SolidColorBrush x:Key="PrimaryBrushPointerOver">#005A9E</SolidColorBrush>
+                    <SolidColorBrush x:Key="BorderBrush">#E0E0E0</SolidColorBrush>
+                    <SolidColorBrush x:Key="GrayTextBrush">Gray</SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="BackgroundBrush">#23272E</SolidColorBrush>
+                    <SolidColorBrush x:Key="HeaderBrush">#2D333B</SolidColorBrush>
+                    <SolidColorBrush x:Key="PrimaryBrush">#3399FF</SolidColorBrush>
+                    <SolidColorBrush x:Key="PrimaryBrushPointerOver">#1976D2</SolidColorBrush>
+                    <SolidColorBrush x:Key="BorderBrush">#3A3F4B</SolidColorBrush>
+                    <SolidColorBrush x:Key="GrayTextBrush">#B0B0B0</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <vm:AIAnalysisViewModel />
+    </UserControl.DataContext>
+
+    <Grid RowDefinitions="Auto,*" Margin="20">
+        <!-- 头部控制区域 -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource HeaderBrush}" 
+                CornerRadius="8" 
+                Padding="16"
+                Margin="0,0,0,16">
+            <StackPanel>
+                <TextBlock Text="AI 智能分析" 
+                          FontSize="24" 
+                          FontWeight="Bold" 
+                          Margin="0,0,0,8"/>
+                <TextBlock Text="基于AI的深度智能分析报告" 
+                          FontSize="14" 
+                          Foreground="{DynamicResource GrayTextBrush}"
+                          Margin="0,0,0,16"/>
+
+                <!-- 模型选择 -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12" VerticalAlignment="Center">
+                    <TextBlock Text="选择模型：" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox Width="220"
+                              ItemsSource="{Binding ModelList}"
+                              SelectedItem="{Binding SelectedModel, Mode=TwoWay}"
+                              IsEnabled="{Binding CanStartAnalysis}"
+                              />
+                    <TextBlock Text="(模型加载中...)" Margin="12,0,0,0" Foreground="{DynamicResource GrayTextBrush}"
+                               VerticalAlignment="Center"
+                               IsVisible="{Binding IsModelListEmpty}"/>
+                </StackPanel>
+
+                <Button Content="开始分析" 
+                        Command="{Binding StartAnalysisCommand}"
+                        IsEnabled="{Binding CanStartAnalysis}"
+                        HorizontalAlignment="Left"
+                        Padding="16,8"
+                        Background="{DynamicResource PrimaryBrush}"
+                        Foreground="White"
+                        CornerRadius="4">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="{DynamicResource PrimaryBrushPointerOver}"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- 分析结果区域 -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource BackgroundBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Padding="0">
+            
+            <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                         HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="20">
+                    
+                    <!-- 加载指示器 -->
+                    <StackPanel IsVisible="{Binding IsAnalyzing}" 
+                               HorizontalAlignment="Center" 
+                               Margin="0,40,0,40">
+                        <TextBlock Text="🤖" 
+                                  FontSize="48" 
+                                  HorizontalAlignment="Center"
+                                  Margin="0,0,0,16"/>
+                        <TextBlock Text="{Binding StatusMessage}" 
+                                  FontSize="16" 
+                                  HorizontalAlignment="Center"
+                                  Foreground="{DynamicResource GrayTextBrush}"
+                                  TextAlignment="Center"/>
+                        <ProgressBar IsIndeterminate="True" 
+                                   Width="200" 
+                                   Height="4"
+                                   Margin="0,16,0,0"/>
+                    </StackPanel>
+
+                    <!-- 分析结果 -->
+                    <StackPanel IsVisible="{Binding !IsAnalyzing}">
+                        <markdown:MarkdownScrollViewer Markdown="{Binding AnalysisResult}"
+                                                IsVisible="{Binding AnalysisResult, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                />
+                        
+                        <!-- 空状态 -->
+                        <StackPanel IsVisible="{Binding AnalysisResult, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,60,0,60">
+                            <TextBlock Text="🔍" 
+                                      FontSize="64" 
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,16"
+                                      Opacity="0.3"/>
+                            <TextBlock Text="{Binding StatusMessage}" 
+                                      FontSize="16" 
+                                      HorizontalAlignment="Center"
+                                      Foreground="{DynamicResource GrayTextBrush}"
+                                      TextAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

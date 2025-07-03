@@ -9,5 +9,14 @@
         <TabItem Header="历史记录">
             <views:HistoryView />
         </TabItem>
+        <TabItem Header="统计">
+            <views:StatisticsView />
+        </TabItem>
+        <TabItem Header="AI">
+            <views:AIAnalysisView />
+        </TabItem>
+        <TabItem Header="同步">
+            <views:SyncView />
+        </TabItem>
     </TabControl>
 </UserControl>

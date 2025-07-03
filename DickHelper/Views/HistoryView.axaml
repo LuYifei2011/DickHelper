@@ -6,18 +6,35 @@
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:Class="DickHelper.Views.HistoryView"
 			 x:DataType="vm:HistoryViewModel">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key='Light'>
+					<SolidColorBrush x:Key='BackgroundBrush'>#FFF</SolidColorBrush>
+					<SolidColorBrush x:Key='BorderBrush'>#DDD</SolidColorBrush>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key='Dark'>
+					<SolidColorBrush x:Key='BackgroundBrush'>#000</SolidColorBrush>
+					<SolidColorBrush x:Key='BorderBrush'>#222</SolidColorBrush>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
 	<Grid>
-   <ListBox x:Name="RecordsListBox"
+		<ListBox x:Name="RecordsListBox"
 		   ItemsSource="{Binding Records}"
 		   SelectedItem="{Binding SelectedRecord, Mode=TwoWay}"
 		   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
 		   Margin="20, 20, 20, 70">
 		   <ListBox.ItemTemplate>
 			  <DataTemplate>
-				 <Border Margin="2" Padding="8" CornerRadius="6" Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1">
+				 <Border Margin="2" Padding="8" CornerRadius="6"
+						 Background="{DynamicResource BackgroundBrush}"
+						 BorderBrush="{DynamicResource BorderBrush}"
+						 BorderThickness="1">
 					  <StackPanel>
 						 <TextBlock Text="{Binding DisplayDate}" FontSize="16" TextWrapping="Wrap"/>
-						 <TextBlock Text="{Binding DisplayDuration}" FontSize="14" Foreground="{DynamicResource ThemeForegroundBrush}" Opacity="0.7" TextWrapping="Wrap"/>
+						 <TextBlock Text="{Binding DisplayDuration}" FontSize="14" Opacity="0.7" TextWrapping="Wrap"/>
 					  </StackPanel>
 				  </Border>
 			  </DataTemplate>

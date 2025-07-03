@@ -3,6 +3,7 @@ using Avalonia.Threading;
 using DialogHostAvalonia;
 using System;
 using System.Threading.Tasks;
+using DickHelper.ViewModels;
 
 namespace DickHelper.Views;
 
@@ -53,7 +54,7 @@ public partial class MainView : UserControl
                 var recordData = await ShowRecordDialog();
                 if (recordData != null)
                 {
-                    App.HistoryViewModelInstance.AddRecord(DateTime.Now, _elapsed, recordData);
+                    HistoryViewModel.Instance.AddRecord(DateTime.Now, _elapsed, recordData);
                 }
             }
             ResetTimer();

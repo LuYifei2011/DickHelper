@@ -12,7 +12,7 @@ namespace DickHelper;
 
 public partial class App : Application
 {
-    public static HistoryViewModel HistoryViewModelInstance { get; private set; } = new HistoryViewModel();
+    public static HistoryViewModel HistoryViewModelInstance => HistoryViewModel.Instance;
 
     public override void Initialize()
     {

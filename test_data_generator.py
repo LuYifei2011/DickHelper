@@ -1,6 +1,6 @@
 import json
 import random
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, time
 import os
 import re
 
@@ -11,7 +11,7 @@ def parse_weighted_choices(options, weights_str):
         result.extend([opt] * w)
     return result
 
-def parse_frequency(freq_str, total_count):
+def parse_frequency(freq_str, total_count, time_periods=None):
     """
     支持格式：
     1/3^1   表示3±1天一次
@@ -19,6 +19,26 @@ def parse_frequency(freq_str, total_count):
     1/2     表示2天1次
     """
     freq_str = freq_str.replace(" ", "")
+    # 时间段定义
+    period_ranges = [
+        (6, 9),    # 早上
+        (10, 12),  # 中午
+        (13, 17),  # 下午
+        (18, 23),  # 晚上
+        (0, 5),    # 凌晨
+    ]
+    def randomize_time(dt):
+        # 按权重选择时间段
+        idx = random.choice(time_periods) if time_periods else random.randint(0, 4)
+        start_hour, end_hour = period_ranges[idx]
+        if start_hour <= end_hour:
+            rand_hour = random.randint(start_hour, end_hour)
+        else:
+            # 跨天（如凌晨0-5点）
+            rand_hour = random.randint(start_hour, 23) if random.random() < 0.5 else random.randint(0, end_hour)
+        rand_min = random.randint(0, 59)
+        rand_sec = random.randint(0, 59)
+        return dt.replace(hour=rand_hour, minute=rand_min, second=rand_sec, microsecond=0)
     # 1/3^1
     m = re.match(r"(\d+)(?:\^(\d+))?/(\d+)(?:\^(\d+))?", freq_str)
     if m:
@@ -41,6 +61,7 @@ def parse_frequency(freq_str, total_count):
             for _ in range(times):
                 if len(dates) < total_count:
                     dt = now - timedelta(days=i)
+                    dt = randomize_time(dt)
                     dates.append(dt)
             i += days
         return dates[:total_count]
@@ -59,6 +80,7 @@ def parse_frequency(freq_str, total_count):
             for _ in range(times):
                 if len(dates) < total_count:
                     dt = now - timedelta(days=i)
+                    dt = randomize_time(dt)
                     dates.append(dt)
             i += d
         return dates[:total_count]
@@ -74,12 +96,13 @@ def parse_frequency(freq_str, total_count):
             for _ in range(n):
                 if len(dates) < total_count:
                     dt = now - timedelta(days=i)
+                    dt = randomize_time(dt)
                     dates.append(dt)
             i += d
         return dates[:total_count]
     # 默认：每天一条
     now = datetime.now(timezone(timedelta(hours=8)))
-    return [now - timedelta(days=i) for i in range(total_count)]
+    return [randomize_time(now - timedelta(days=i)) for i in range(total_count)]
 
 def random_record(i, min_minute, max_minute, min_second, max_second, locations, tools, moods, date, watched_prob, climax_prob):
     now = datetime.now(timezone(timedelta(hours=8)))
@@ -131,6 +154,10 @@ def main():
     location_opts = ["卧室", "浴室", "客厅"]
     tool_opts = ["手", "飞机杯", "娃娃"]
     mood_opts = ["平静", "愉悦", "兴奋", "疲惫", "这是最后一次！"]
+    # 时间段
+    time_period_opts = ["早上", "中午", "下午", "晚上", "凌晨"]
+    time_period_weights = input(f"请输入时间段权重（用:分隔，{len(time_period_opts)}项，默认2:2:3:4:1）：") or "2:2:3:4:1"
+    time_periods = parse_weighted_choices(list(range(len(time_period_opts))), time_period_weights)
 
     location_weights = input(f"请输入地点权重（用:分隔，{len(location_opts)}项，默认2:2:1）：") or "2:2:1"
     tool_weights = input(f"请输入道具权重（用:分隔，{len(tool_opts)}项，默认2:3:1）：") or "2:3:1"
@@ -152,7 +179,7 @@ def main():
         climax_prob = 0.8
 
     freq = input("请输入频率（如1/3^1表示3±1天一次，2^1/1表示1天2±1次，1/2表示2天1次，默认1/3^1）：") or "1/3^1"
-    dates = parse_frequency(freq, count)
+    dates = parse_frequency(freq, count, time_periods)
     records = [
         random_record(
             i, min_minute, max_minute, min_second, max_second,

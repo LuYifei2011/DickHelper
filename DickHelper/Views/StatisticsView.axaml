@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:DickHelper.ViewModels"
+             xmlns:scottplot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+             x:Class="DickHelper.Views.StatisticsView"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:StatisticsViewModel">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key='Light'>
+					<SolidColorBrush x:Key='BackgroundBrush'>#F5F5F5</SolidColorBrush>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key='Dark'>
+					<SolidColorBrush x:Key='BackgroundBrush'>#2D333B</SolidColorBrush>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<ScrollViewer>
+        <StackPanel Margin="20">
+            <TextBlock Text="统计信息" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+            
+            <!-- 基本统计信息 -->
+            <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                <TextBlock Text="{Binding Summary}" FontSize="14"/>
+            </Border>
+            
+            <!-- 持续时间趋势图 -->
+            <TextBlock Text="持续时间趋势" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+            <Border Background="White" CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Height="300" Margin="0,0,0,20">
+                <scottplot:AvaPlot x:Name="DurationChart" />
+            </Border>
+            <!-- 月次数条形图 -->
+            <TextBlock Text="每月次数统计" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+            <Border Background="White" CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Height="300" Margin="0,0,0,20">
+                <scottplot:AvaPlot x:Name="MonthCountChart" />
+            </Border>
+            <!-- 周次数条形图 -->
+            <TextBlock Text="每周次数统计" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+            <Border Background="White" CornerRadius="8" BorderBrush="Gray" BorderThickness="1" Height="300" Margin="0,0,0,20">
+                <scottplot:AvaPlot x:Name="WeekCountChart" />
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

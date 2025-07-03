@@ -16,9 +16,13 @@
 ---
 
 ## 主要特性
-- 跨平台支持（目前仅支持桌面端和安卓端，iOS 端与 Web 端计划后续支持）
-- 采用 Avalonia 框架开发
-- 包含 MVVM 架构，易于扩展和维护
+- 跨平台支持：桌面端、安卓端（iOS 与 Web 端计划支持）
+- 基于 Avalonia 框架，MVVM 架构，易扩展维护
+- 支持深色和浅色主题
+- 简洁高效，易用性强
+- AI 智能分析，自动生成个性化报告
+- 丰富的统计与可视化图表（趋势、月/周统计等）
+- 局域网同步，支持多设备数据互通
 
 ## 目录结构
 - `DickHelper/`：主项目代码，包含视图(Views)、视图模型(ViewModels)等
@@ -28,17 +32,24 @@
 - `DickHelper.Browser/`：Web 端启动项目（暂未支持）
 
 ## 说明
-本项目的绝大部分代码由 GitHub Copilot 生成和辅助编写，极大提升了开发效率。
+本项目绝大部分代码由 GitHub Copilot 生成和辅助编写，极大提升了开发效率。
 
 本项目参考了以下开源项目：
-- [NzHelper](https://github.com/LuYifei2011/DickHelper)
+- [NzHelper](https://github.com/zzzdajb/NzHelper)
 - [DickHelper](https://github.com/zzzdajb/DickHelper)
+
+## 联系方式
+如有建议、问题或合作意向，欢迎通过 [GitHub Issues](https://github.com/LuYifei2011/DickHelper/issues) 提出，或通过 Telegram 联系 [@luyifei2011_bot](https://t.me/luyifei2011_bot)。
 
 ## 屏幕截图
 <img alt="Android 主页" src="./screenshot/Android_主页.jpg" height=200>
 <img alt="Android 历史详情" src="./screenshot/Android_历史详情.jpg" height=200>
+<img alt="Android AI" src="./screenshot/Android_AI.jpg" height=200>
+<img alt="Android 同步" src="./screenshot/Android_同步.jpg" height=200>
 <img alt="Windows 主页" src="./screenshot/Windows_主页.png" height=200>
 <img alt="Windows 记录详情" src="./screenshot/Windows_记录详情.png" height=200>
+<img alt="Windows 统计" src="./screenshot/Windows_统计.png" height=200>
+<img alt="Windows AI" src="./screenshot/Windows_AI.png" height=200>
 
 ## 如何运行
 1. 使用 Visual Studio 2022 或更高版本打开 `DickHelper.sln` 解决方案。

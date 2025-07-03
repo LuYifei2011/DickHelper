@@ -10,6 +10,9 @@ namespace DickHelper.ViewModels;
 
 public partial class HistoryViewModel : ViewModelBase
 {
+    private static HistoryViewModel? _instance;
+    public static HistoryViewModel Instance => _instance ??= new HistoryViewModel();
+
     private static string GetHistoryFilePath()
     {
         string baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -25,7 +28,7 @@ public partial class HistoryViewModel : ViewModelBase
     [ObservableProperty]
     private HistoryRecord? _selectedRecord;
 
-    public HistoryViewModel()
+    private HistoryViewModel()
     {
         LoadHistoryAsync();
     }
