@@ -1,7 +1,7 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using DickHelper.ViewModels;
+using System;
 
 namespace DickHelper;
 

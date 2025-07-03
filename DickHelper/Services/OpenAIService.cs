@@ -1,13 +1,13 @@
+using Microsoft.Extensions.Configuration;
+using OpenAI;
+using OpenAI.Chat;
+using OpenAI.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using OpenAI;
-using OpenAI.Chat;
-using OpenAI.Models;
 
 namespace DickHelper.Services;
 
@@ -106,7 +106,7 @@ public class OpenAIService
         try
         {
             var prompt = BuildAnalysisPrompt(records);
-            
+
             var messages = new List<ChatMessage>
             {
                 new SystemChatMessage("你是一个专业的数据分析师，专门分析个人行为模式和习惯。请基于提供的历史记录数据，提供深入、有用的分析和建议。分析应该包括时间模式、频率分析、趋势识别和健康建议。"),
@@ -120,7 +120,7 @@ public class OpenAIService
             };
 
             var response = await _client.GetChatClient(_model).CompleteChatAsync(messages, chatRequest);
-            
+
             return response.Value.Content[0].Text;
         }
         catch (Exception ex)
@@ -177,7 +177,7 @@ public class OpenAIService
         {
             sb.AppendLine($"- 日期: {record.Date:yyyy-MM-dd HH:mm:ss}");
             sb.AppendLine($"  持续时间: {record.Duration:hh\\:mm\\:ss}");
-            
+
             if (record.Detail != null)
             {
                 if (record.Detail.Score > 0)

@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using DialogHostAvalonia;
 
@@ -45,7 +44,7 @@ namespace DickHelper.Views
         {
             var slider = this.FindControl<Slider>("ScoreSlider");
             var scoreText = this.FindControl<TextBlock>("ScoreText");
-            
+
             if (slider != null && scoreText != null)
             {
                 slider.PropertyChanged += (s, e) =>
@@ -59,12 +58,12 @@ namespace DickHelper.Views
 
             var okButton = this.FindControl<Button>("OkButton");
             var cancelButton = this.FindControl<Button>("CancelButton");
-            
+
             if (okButton != null)
             {
                 okButton.Click += (s, e) => DialogHost.Close(null, "OK");
             }
-            
+
             if (cancelButton != null)
             {
                 cancelButton.Click += (s, e) => DialogHost.Close(null, "CANCEL");

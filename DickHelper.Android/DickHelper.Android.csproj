@@ -10,6 +10,12 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Debugger>Xamarin</Debugger>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Debugger>Xamarin</Debugger>
+  </PropertyGroup>
 
   <ItemGroup>
     <AndroidResource Include="Icon.png">

@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using DickHelper.ViewModels;
 using DialogHostAvalonia;
+using DickHelper.ViewModels;
 
 namespace DickHelper.Views
 {
@@ -29,7 +29,7 @@ namespace DickHelper.Views
             this.FindControl<TextBlock>("MoodText")!.Text = record.DisplayMood;
             this.FindControl<TextBlock>("MovieText")!.Text = string.IsNullOrWhiteSpace(record.DisplayWatchedMovie) ? "否" : "是";
             this.FindControl<TextBlock>("ClimaxText")!.Text = string.IsNullOrWhiteSpace(record.DisplayClimax) ? "否" : "是";
-            
+
             var okButton = this.FindControl<Button>("OkButton");
             if (okButton != null)
             {

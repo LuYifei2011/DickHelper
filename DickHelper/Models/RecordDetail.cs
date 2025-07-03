@@ -1,5 +1,3 @@
-using System;
-
 namespace DickHelper.Models
 {
     public class RecordDetail

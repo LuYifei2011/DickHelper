@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 using DickHelper.Services;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace DickHelper.ViewModels
 {

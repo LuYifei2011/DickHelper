@@ -20,11 +20,11 @@ public partial class HistoryView : UserControl
                 if (listBox.SelectedItem is DickHelper.ViewModels.HistoryRecord record)
                 {
                     var dialogContent = new HistoryDetailDialogContent(record);
-                    
+
                     // 查找父级窗口中的DialogHost
                     var window = this.FindAncestorOfType<Window>();
                     var dialogHost = window?.FindControl<DialogHost>("MainDialogHost");
-                    
+
                     if (dialogHost != null)
                     {
                         await DialogHost.Show(dialogContent, "MainDialogHost");

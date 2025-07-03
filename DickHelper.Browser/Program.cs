@@ -1,8 +1,7 @@
-﻿using System.Runtime.Versioning;
-using System.Threading.Tasks;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Browser;
 using DickHelper;
+using System.Threading.Tasks;
 
 internal sealed partial class Program
 {

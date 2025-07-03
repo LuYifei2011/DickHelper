@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using DialogHostAvalonia;
+using DickHelper.ViewModels;
 using System;
 using System.Threading.Tasks;
-using DickHelper.ViewModels;
 
 namespace DickHelper.Views;
 
