@@ -39,73 +39,32 @@ public class OpenAIService
 
     private IConfiguration LoadConfiguration()
     {
-        // 运行时判断平台
-        if (OperatingSystem.IsAndroid())
+        // 修改配置文件路径到 LocalApplicationData\DickHelper\appsettings.json
+        string baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string dir = Path.Combine(baseDir, "DickHelper");
+        if (!Directory.Exists(dir))
         {
-            try
+            Directory.CreateDirectory(dir);
+        }
+        var configPath = Path.Combine(dir, "appsettings.json");
+        if (!File.Exists(configPath))
+        {
+            // 创建默认配置文件
+            var defaultConfig = """
             {
-                // 反射获取 Android.App.Application.Context
-                var appType = Type.GetType("Android.App.Application, Mono.Android");
-                var contextProp = appType?.GetProperty("Context");
-                var context = contextProp?.GetValue(null);
-                var assetsProp = context?.GetType().GetProperty("Assets");
-                var assets = assetsProp?.GetValue(context);
-                var openMethod = assets?.GetType().GetMethod("Open", new[] { typeof(string) });
-                var streamObj = openMethod?.Invoke(assets, new object[] { "appsettings.json" });
-                if (streamObj is not Stream stream)
-                    throw new InvalidOperationException("无法从Android Assets读取appsettings.json");
-                using (stream)
-                using (var reader = new StreamReader(stream))
-                {
-                    var json = reader.ReadToEnd();
-                    var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(json);
-                    if (dict == null || !dict.ContainsKey("OpenAI"))
-                        throw new InvalidOperationException("appsettings.json 缺少 OpenAI 配置段");
-                    var openAiSection = dict["OpenAI"];
-                    var configBuilder = new ConfigurationBuilder();
-                    configBuilder.AddInMemoryCollection(new[]
-                    {
-                        new KeyValuePair<string, string?>("OpenAI:ApiKey", openAiSection.ContainsKey("ApiKey") ? openAiSection["ApiKey"] : null),
-                        new KeyValuePair<string, string?>("OpenAI:BaseUrl", openAiSection.ContainsKey("BaseUrl") ? openAiSection["BaseUrl"] : null),
-                        new KeyValuePair<string, string?>("OpenAI:Model", openAiSection.ContainsKey("Model") ? openAiSection["Model"] : null)
-                    });
-                    return configBuilder.Build();
+                "OpenAI": {
+                "ApiKey": "sk-W0rpStc95T7JVYVwDYc29IyirjtpPPby6SozFMQr17m8KWeo",
+                "BaseUrl": "https://api.suanli.cn/v1",
+                "Model": "free:QwQ-32B"
                 }
             }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException($"读取Android appsettings.json失败: {ex.Message}");
-            }
+            """;
+            File.WriteAllText(configPath, defaultConfig, Encoding.UTF8);
         }
-        else
-        {
-            // 修改配置文件路径到 LocalApplicationData\DickHelper\appsettings.json
-            string baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string dir = Path.Combine(baseDir, "DickHelper");
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            var configPath = Path.Combine(dir, "appsettings.json");
-            if (!File.Exists(configPath))
-            {
-                // 创建默认配置文件
-                var defaultConfig = """
-                {
-                  "OpenAI": {
-                    "ApiKey": "sk-W0rpStc95T7JVYVwDYc29IyirjtpPPby6SozFMQr17m8KWeo",
-                    "BaseUrl": "https://api.suanli.cn/v1",
-                    "Model": "free:QwQ-32B"
-                  }
-                }
-                """;
-                File.WriteAllText(configPath, defaultConfig, Encoding.UTF8);
-            }
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(dir)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            return builder.Build();
-        }
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(dir)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        return builder.Build();
     }
 
     public async Task<string> AnalyzeHistoryRecordsAsync(IEnumerable<ViewModels.HistoryRecord> records)
