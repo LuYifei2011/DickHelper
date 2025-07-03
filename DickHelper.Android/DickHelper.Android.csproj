@@ -31,8 +31,4 @@
   <ItemGroup>
     <ProjectReference Include="..\DickHelper\DickHelper.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <AndroidAsset Include="..\DickHelper\appsettings.json" />
-  </ItemGroup>
 </Project>

@@ -79,7 +79,14 @@ public class OpenAIService
         }
         else
         {
-            var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+            // 修改配置文件路径到 LocalApplicationData\DickHelper\appsettings.json
+            string baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string dir = Path.Combine(baseDir, "DickHelper");
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            var configPath = Path.Combine(dir, "appsettings.json");
             if (!File.Exists(configPath))
             {
                 // 创建默认配置文件
@@ -95,7 +102,7 @@ public class OpenAIService
                 File.WriteAllText(configPath, defaultConfig, Encoding.UTF8);
             }
             var builder = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .SetBasePath(dir)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             return builder.Build();
         }
